@@ -64,7 +64,7 @@ GROUP BY film.film_id;
 
 -- * 6e. Using the tables `payment` and `customer` and the `JOIN` command, list the total paid by each customer. List the customers alphabetically by last name:
 
-SELECT last_name, first_name, SUM(amount) AS total_paid FROM customer
+SELECT first_name, last_name, sum(amount) as `Total Amount Paid` FROM customer
 JOIN payment ON payment.customer_id = customer.customer_id
 GROUP BY customer.customer_id
 ORDER BY last_name;
