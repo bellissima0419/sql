@@ -40,3 +40,31 @@ UPDATE actor SET first_name = 'GROUCHO' WHERE actor_id = 172;
 
 -- * 5a. You cannot locate the schema of the `address` table. Which query would you use to re-create it?
 SHOW CREATE TABLE address;
+
+-- * 6a. Use `JOIN` to display the first and last names, as well as the address, of each staff member. Use the tables `staff` and `address`:
+
+SELECT staff.first_name, staff.last_name, address.address FROM staff JOIN address ON staff.address_id = address.address_id;
+
+-- * 6b. Use `JOIN` to display the total amount rung up by each staff member in August of 2005. Use tables `staff` and `payment`.
+SELECT staff.staff_id, staff.first_name, staff.last_name, SUM(payment.amount) AS 'Total $ Aug-2005' FROM staff
+JOIN payment ON staff.staff_id = payment.staff_id
+WHERE YEAR(payment_date) = 2005 AND MONTH(payment_date) = 8
+-- WHERE payment.payment_date LIKE ('2005-08%')
+GROUP BY staff_id;
+
+-- * 6c. List each film and the number of actors who are listed for that film. Use tables `film_actor` and `film`. Use inner join.
+SELECT title, COUNT(actor_id) AS actor_count
+FROM film_actor INNER JOIN film ON film_actor.film_id = film.film_id
+GROUP BY film.film_id;
+-- * 6d. How many copies of the film `Hunchback Impossible` exist in the inventory system?
+SELECT title, count(title) AS number_of_copies
+FROM film INNER JOIN inventory ON inventory.film_id = film.film_id
+WHERE title = 'Hunchback Impossible'
+GROUP BY film.film_id;
+
+-- * 6e. Using the tables `payment` and `customer` and the `JOIN` command, list the total paid by each customer. List the customers alphabetically by last name:
+
+SELECT last_name, first_name, sum(amount) as total_paid FROM customer
+JOIN payment ON payment.customer_id = customer.customer_id
+GROUP BY customer.customer_id
+ORDER BY last_name;
