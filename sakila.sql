@@ -31,3 +31,12 @@ SELECT last_name, COUNT(last_name) AS last_name_count from actor GROUP BY last_n
 -- * 4b. List last names of actors and the number of actors who have that last name, but only for names that are shared by at least two actors
 SELECT last_name, COUNT(last_name) AS last_name_count from actor GROUP BY last_name HAVING last_name_count > 1;
 
+-- * 4c. The actor `HARPO WILLIAMS` was accidentally entered in the `actor` table as `GROUCHO WILLIAMS`. Write a query to fix the record.
+SELECT * FROM actor WHERE (first_name, last_name) = ('GROUCHO', 'WILLIAMS');
+UPDATE actor SET first_name = 'HARPO' WHERE actor_id = 172;
+
+-- * 4d. Perhaps we were too hasty in changing `GROUCHO` to `HARPO`. It turns out that `GROUCHO` was the correct name after all! In a single query, if the first name of the actor is currently `HARPO`, change it to `GROUCHO`.
+UPDATE actor SET first_name = 'GROUCHO' WHERE actor_id = 172;
+
+-- * 5a. You cannot locate the schema of the `address` table. Which query would you use to re-create it?
+SHOW CREATE TABLE address;
