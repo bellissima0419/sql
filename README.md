@@ -1,5 +1,5 @@
 # sql
-querying sakila with mysql
+Querying Sakila with mysql
 
 <img src="./Images/myDolphin.png" width="100">
 
