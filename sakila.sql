@@ -42,7 +42,6 @@ UPDATE actor SET first_name = 'GROUCHO' WHERE actor_id = 172;
 SHOW CREATE TABLE address;
 
 -- * 6a. Use `JOIN` to display the first and last names, as well as the address, of each staff member. Use the tables `staff` and `address`:
-
 SELECT staff.first_name, staff.last_name, address.address FROM staff JOIN address ON staff.address_id = address.address_id;
 
 -- * 6b. Use `JOIN` to display the total amount rung up by each staff member in August of 2005. Use tables `staff` and `payment`.
@@ -64,19 +63,15 @@ WHERE title = 'Hunchback Impossible'
 GROUP BY film.film_id;
 
 -- * 6e. Using the tables `payment` and `customer` and the `JOIN` command, list the total paid by each customer. List the customers alphabetically by last name:
-
 SELECT first_name, last_name, sum(amount) as `Total Amount Paid` FROM customer
 JOIN payment ON payment.customer_id = customer.customer_id
 GROUP BY customer.customer_id
 ORDER BY last_name;
 
-
 -- * 7a. The music of Queen and Kris Kristofferson have seen an unlikely resurgence. As an unintended consequence, films starting with the letters `K` and `Q` have also soared in popularity. Use subqueries to display the titles of movies starting with the letters `K` and `Q` whose language is English.
-
 SELECT title FROM film
 WHERE title LIKE 'K%' OR title LIKE 'Q%' AND language_id IN
 (SELECT language_id FROM film WHERE language_id = 1);
-
 
 -- * 7b. Use subqueries to display all actors who appear in the film `Alone Trip`.
 SELECT a.first_name, a.last_name FROM actor a WHERE a.actor_id IN
@@ -94,7 +89,6 @@ WHERE country.country = 'Canada';
 SELECT film.title FROM film WHERE film.film_id IN
   (SELECT film_category.film_id FROM film_category WHERE  film_category.category_id IN
     (SELECT category.category_id FROM category WHERE name = 'Family'));
-
 
 -- * 7e. Display the most frequently rented movies in descending order.
 SELECT  film.title, count(rental.rental_id) as rental_count FROM rental
