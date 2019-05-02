@@ -104,8 +104,8 @@ GROUP BY film.title
 ORDER BY rental_count  DESC;
 
 -- * 7f. Write a query to display how much business, in dollars, each store brought in.
-SELECT store.store_id, SUM(amount) AS 'Total Rental Amount($)'	FROM payment p
-JOIN rental ON (p.rental_id = rental.rental_id)
+SELECT store.store_id, SUM(amount) AS 'Total Rental Amount($)'	FROM payment
+JOIN rental ON (payment.rental_id = rental.rental_id)
 JOIN inventory ON (inventory.inventory_id = rental.inventory_id)
 JOIN store ON (store.store_id = inventory.store_id)
 GROUP BY store.store_id;
