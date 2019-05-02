@@ -85,9 +85,9 @@ SELECT a.first_name, a.last_name FROM actor a WHERE a.actor_id IN
 
 -- * 7c. You want to run an email marketing campaign in Canada, for which you will need the names and email addresses of all Canadian customers. Use joins to retrieve this information.
 SELECT customer.first_name, customer.last_name, customer.email FROM customer
-JOIN address ON (address.address_id = customer.address_id)
-JOIN city ON (city.city_id = address.city_id)
-JOIN country ON (country.country_id = city.country_id)
+JOIN address ON address.address_id = customer.address_id
+JOIN city ON city.city_id = address.city_id
+JOIN country ON country.country_id = city.country_id
 WHERE country.country = 'Canada';
 
 -- * 7d. Sales have been lagging among young families, and you wish to target all family movies for a promotion. Identify all movies categorized as _family_ films.
@@ -98,19 +98,32 @@ SELECT film.title FROM film WHERE film.film_id IN
 
 -- * 7e. Display the most frequently rented movies in descending order.
 SELECT  film.title, count(rental.rental_id) as rental_count FROM rental
-JOIN inventory ON (inventory.inventory_id = rental.inventory_id)
-JOIN film ON (film.film_id = inventory.film_id)
+JOIN inventory ON inventory.inventory_id = rental.inventory_id
+JOIN film ON film.film_id = inventory.film_id
 GROUP BY film.title
 ORDER BY rental_count  DESC;
 
 -- * 7f. Write a query to display how much business, in dollars, each store brought in.
 SELECT store.store_id, SUM(amount) AS 'Total Rental Amount($)'	FROM payment
-JOIN rental ON (payment.rental_id = rental.rental_id)
-JOIN inventory ON (inventory.inventory_id = rental.inventory_id)
-JOIN store ON (store.store_id = inventory.store_id)
+JOIN rental ON payment.rental_id = rental.rental_id
+JOIN inventory ON inventory.inventory_id = rental.inventory_id
+JOIN store ON store.store_id = inventory.store_id
 GROUP BY store.store_id;
 
 
 -- * 7g. Write a query to display for each store its store ID, city, and country.
+SELECT store.store_id, city, country FROM store
+JOIN customer ON store.store_id = customer.store_id
+JOIN staff ON store.store_id = staff.store_id
+JOIN address ON customer.address_id = address.address_id
+JOIN city ON address.city_id = city.city_id
+JOIN country ON city.country_id = country.country_id;
 
 -- * 7h. List the top five genres in gross revenue in descending order. (**Hint**: you may need to use the following tables: category, film_category, inventory, payment, and rental.)
+SELECT category.name as 'Category', SUM(payment.amount) AS gross_revenue FROM category
+JOIN film_category ON film_category.category_id = category.category_id
+JOIN inventory ON inventory.film_id = film_category.film_id
+JOIN rental ON rental.inventory_id = inventory.inventory_id
+JOIN payment ON payment.rental_id = rental.rental_id
+GROUP BY category.name ORDER BY gross_revenue DESC
+LIMIT 5;
