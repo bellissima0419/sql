@@ -56,6 +56,7 @@ GROUP BY staff_id;
 SELECT title, COUNT(actor_id) AS actor_count
 FROM film_actor INNER JOIN film ON film_actor.film_id = film.film_id
 GROUP BY film.film_id;
+
 -- * 6d. How many copies of the film `Hunchback Impossible` exist in the inventory system?
 SELECT title, count(title) AS number_of_copies
 FROM film INNER JOIN inventory ON inventory.film_id = film.film_id
@@ -96,13 +97,19 @@ SELECT film.title FROM film WHERE film.film_id IN
 
 
 -- * 7e. Display the most frequently rented movies in descending order.
-SELECT  film.title, count(rental_id) as rental_count FROM rental
+SELECT  film.title, count(rental.rental_id) as rental_count FROM rental
 JOIN inventory ON (inventory.inventory_id = rental.inventory_id)
 JOIN film ON (film.film_id = inventory.film_id)
 GROUP BY film.title
 ORDER BY rental_count  DESC;
 
 -- * 7f. Write a query to display how much business, in dollars, each store brought in.
+SELECT store.store_id, SUM(amount) AS 'Total Rental Amount($)'	FROM payment p
+JOIN rental ON (p.rental_id = rental.rental_id)
+JOIN inventory ON (inventory.inventory_id = rental.inventory_id)
+JOIN store ON (store.store_id = inventory.store_id)
+GROUP BY store.store_id;
+
 
 -- * 7g. Write a query to display for each store its store ID, city, and country.
 
